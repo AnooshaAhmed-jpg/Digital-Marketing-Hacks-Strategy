@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quick Quiz — What fruit is red?</title>
+  <style>
+    :root{--bg:#f7f9fc;--card:#fff;--accent:#2b6cb0;--success:#2f855a;--danger:#c53030}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); margin:0; display:flex; align-items:center; justify-content:center; min-height:100vh}
+    .card{background:var(--card); padding:28px; border-radius:12px; box-shadow:0 6px 20px rgba(20,30,60,0.08); width:100%; max-width:520px}
+    h1{font-size:1.2rem; margin:0 0 8px}
+    p.lead{margin:0 0 18px; color:#334155}
+    form{display:grid; gap:12px}
+    label.option{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:8px; border:1px solid #e6eef8; cursor:pointer}
+    input[type="radio"]{accent-color:var(--accent)}
+    button{background:var(--accent); color:white; border:0; padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer}
+    .result{padding:10px 12px; border-radius:8px; font-weight:600}
+    .correct{background:rgba(47,133,90,0.12); color:var(--success); border:1px solid rgba(47,133,90,0.14)}
+    .wrong{background:rgba(197,48,48,0.08); color:var(--danger); border:1px solid rgba(197,48,48,0.12)}
+    .note{font-size:0.9rem; color:#475569}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1>Quick Quiz</h1>
+    <p class="lead">Question: <strong>What fruit is red?</strong></p>
+
+    <form id="quizForm" aria-labelledby="quizLabel">
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend id="quizLabel" style="position:absolute;left:-9999px;">Choose the correct fruit</legend>
+
+        <label class="option"><input type="radio" name="answer" value="a"> a. banana</label>
+        <label class="option"><input type="radio" name="answer" value="b"> b. Apple</label>
+        <label class="option"><input type="radio" name="answer" value="c"> c. orange</label>
+        <label class="option"><input type="radio" name="answer" value="d"> d. grapes</label>
+      </fieldset>
+
+      <div style="display:flex;gap:8px;align-items:center">
+        <button type="submit">Submit Answer</button>
+        <button type="button" id="showAnswer" style="background:#e2e8f0;color:#0f172a;border-radius:8px;padding:10px 12px;border:0;cursor:pointer">Show Answer</button>
+      </div>
+
+      <div id="feedback" aria-live="polite" style="margin-top:12px"></div>
+
+      <p class="note" style="margin-top:12px">Tip: This is a demo quiz — the correct answer is <strong>Apple</strong>.</p>
+    </form>
+  </main>
+
+  <script>
+    (function(){
+      const correct = 'b'; // correct option value
+      const form = document.getElementById('quizForm');
+      const feedback = document.getElementById('feedback');
+      const showBtn = document.getElementById('showAnswer');
+
+      function clearFeedback(){ feedback.innerHTML = ''; feedback.className = ''; }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        clearFeedback();
+        const choice = form.answer.value;
+        if(!choice){
+          feedback.textContent = 'Please select an answer before submitting.';
+          feedback.className = 'result wrong';
+          return;
+        }
+        if(choice === correct){
+          feedback.textContent = 'Correct — Apple is red!';
+          feedback.className = 'result correct';
+        } else {
+          feedback.textContent = 'Incorrect — try again.';
+          feedback.className = 'result wrong';
+        }
+      });
+
+      showBtn.addEventListener('click', function(){
+        clearFeedback();
+        feedback.textContent = 'The correct answer is: b. Apple.';
+        feedback.className = 'result correct';
+      });
+    })();
+  </script>
+</body>
+</html>
